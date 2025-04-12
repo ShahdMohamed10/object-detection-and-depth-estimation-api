@@ -1,0 +1,1 @@
+web: gunicorn pickle_optimized_api:app 

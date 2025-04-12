@@ -1,0 +1,9 @@
+flask==3.0.3
+Pillow
+numpy
+opencv-python-headless
+# The packages below are large and may exceed quota limits
+# Try installing them one by one if space permits
+# torch
+# torchvision
+# ultralytics 

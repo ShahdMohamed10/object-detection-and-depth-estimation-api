@@ -1,0 +1,12 @@
+services:
+  # A web service
+  - type: web
+    name: object-detection-depth-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn render_optimized_api:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: FLASK_DEBUG
+        value: false 
