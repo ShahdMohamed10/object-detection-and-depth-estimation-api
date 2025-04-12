@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Object Detection and Depth Estimation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .video-container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .video-feed {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            display: none;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin-top: 10px;
+            color: #666;
+        }
+    </style>
+    <script>
+        let streamActive = false;
+
+        function toggleStream() {
+            if (!streamActive) {
+                startStream();
+            } else {
+                stopStream();
+            }
+        }
+
+        function startStream() {
+            fetch('/start_stream')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        streamActive = true;
+                        document.getElementById('video-feed').style.display = 'block';
+                        document.getElementById('video-feed').src = '/video_feed';
+                        document.getElementById('toggleBtn').textContent = 'Stop Stream';
+                        document.getElementById('status').textContent = 'Stream active';
+                    } else {
+                        document.getElementById('status').textContent = 'Error: ' + data.message;
+                    }
+                });
+        }
+
+        function stopStream() {
+            fetch('/stop_stream')
+                .then(response => response.json())
+                .then(data => {
+                    streamActive = false;
+                    document.getElementById('video-feed').style.display = 'none';
+                    document.getElementById('toggleBtn').textContent = 'Start Stream';
+                    document.getElementById('status').textContent = 'Stream stopped';
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Real-time Object Detection and Depth Estimation</h1>
+        
+        <div class="controls">
+            <button id="toggleBtn" onclick="toggleStream()">Start Stream</button>
+        </div>
+
+        <div class="video-container">
+            <img id="video-feed" class="video-feed" src="">
+            <div id="status" class="status">Stream inactive</div>
+        </div>
+    </div>
+</body>
+</html>
